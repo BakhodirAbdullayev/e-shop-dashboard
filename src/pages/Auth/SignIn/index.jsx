@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { instance } from "../../../utils/axios";
 import { queryClient } from "../../../index";
 import { useUser } from "../../../utils/state";
+import { useCallback } from "react";
 
 const Container = styled.div`
   width: 100%;
@@ -39,7 +40,7 @@ const SignIn = () => {
 
   const { t } = useTranslation();
 
-  const onFinish = (values) => {
+  const onFinish = useCallback((values) => {
     postMut.mutate(
       {
         ...values,
@@ -59,7 +60,7 @@ const SignIn = () => {
         },
       }
     );
-  };
+  }, []);
 
   return (
     <Container>
