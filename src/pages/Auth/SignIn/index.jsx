@@ -1,11 +1,14 @@
 import React from "react";
-import { useUser } from "../../../utils/state";
 import { LockOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import styled from "styled-components";
 import { usePostData } from "../../../utils/hooks";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../../../utils/axios";
+import { queryClient } from "../../../index";
+import { useUser } from "../../../utils/state";
+import { useCallback } from "react";
 
 const Container = styled.div`
   width: 100%;
@@ -30,25 +33,26 @@ const Head = styled.div`
 `;
 
 const SignIn = () => {
-  const setUser = useUser((s) => s.setUser);
   const nav = useNavigate();
+  const setUser = useUser((s) => s.setUser);
 
   const postMut = usePostData("/auth/signin");
 
   const { t } = useTranslation();
 
-  const onFinish = (values) => {
+  const onFinish = useCallback((values) => {
     postMut.mutate(
       {
         ...values,
       },
       {
         onSuccess: (d) => {
-          setUser(values);
+          setUser(d);
           localStorage.setItem(
             "access_token",
             JSON.stringify(d?.data?.access_token)
           );
+          queryClient.invalidateQueries(["userGetMe"]);
           nav("/");
         },
         onError: (d) => {
@@ -56,7 +60,7 @@ const SignIn = () => {
         },
       }
     );
-  };
+  }, []);
 
   return (
     <Container>

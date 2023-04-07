@@ -7,7 +7,6 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import { useUser } from "./utils/state";
 import { useGetData } from "./utils/hooks";
-import { useNavigate } from "react-router-dom";
 import FirstLoad from "./components/FirstLoad";
 
 i18n
@@ -33,16 +32,9 @@ i18n
 
 function App() {
   const setUser = useUser((s) => s.setUser);
-  const nav = useNavigate();
   const userData = useGetData(["userGetMe"], "/user/me", {
-    enabled: !!localStorage.getItem("access_token") || true,
     onSuccess: (d) => {
       setUser(d);
-    },
-    onError: (e) => {
-      if (e.response.status == 401) {
-        nav("/signin");
-      }
     },
   });
 

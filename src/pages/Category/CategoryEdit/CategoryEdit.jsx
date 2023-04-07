@@ -35,9 +35,6 @@ const CategoryEdit = ({ editRef, id, setModalOpen }) => {
     );
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
   const props = {
     name: "photo",
     action: instanceUpload,
@@ -67,7 +64,6 @@ const CategoryEdit = ({ editRef, id, setModalOpen }) => {
           wrapperCol={{ span: 24 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off"
           fields={[
             {

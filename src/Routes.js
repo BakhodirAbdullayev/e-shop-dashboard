@@ -12,7 +12,14 @@ const RoutesWrapper = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Products />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/categories"
           element={
